@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  signaling-server:
+    build:
+      context: ./webrtc-signalling
+      dockerfile: Dockerfile
+    ports: 
+      - "8443:8443"
+    environment:
+      - WEBRTCSINK_SIGNALLING_SERVER_LOG=debug
+    networks:
+      - webrtc-network
+
+  gstreamer:
+    build:
+      context: ./gstreamer-pipeline
+      dockerfile: Dockerfile
+    depends_on:
+      - signaling-server
+    networks:
+      - webrtc-network
+
+  gstwebrtc-api-test:
+    build:
+      context: ./test-ui
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - signaling-server
+      - gstreamer
+    networks:
+      - webrtc-network
+
+
+networks:
+  webrtc-network:
+    driver: bridge
+
