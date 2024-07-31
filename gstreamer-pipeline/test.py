@@ -9,10 +9,9 @@ Gst.init(None)
 def create_pipeline():
     # Create the pipeline directly with a multiline string
     pipeline = Gst.parse_launch("""
-        uridecodebin uri=file:///app/test.mp4 name=demux 
         webrtcsink signaller::uri=ws://signaling-server:8443 name=ws meta="meta,name=gst-stream"
-        demux. ! queue ! videoconvert ! video/x-raw ! queue ! ws. 
-        demux. ! queue ! audioconvert ! audioresample ! audio/x-raw ! queue ! ws.
+        v4l2src device=/dev/video1 ! video/x-raw ! videoconvert ! queue ! ws.
+        alsasrc device=hw:1,0 ! audio/x-raw ! audioconvert ! audioresample ! queue  ! ws.
     """)
 
     # Set up bus message handling

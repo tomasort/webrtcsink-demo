@@ -16,6 +16,13 @@ services:
     build:
       context: ./gstreamer-pipeline
       dockerfile: Dockerfile
+    devices:
+      - /dev/video1:/dev/video1
+      - /dev/snb:/dev/snb
+    group_add:
+      - video
+      - audio
+    privileged: true
     depends_on:
       - signaling-server
     networks:
