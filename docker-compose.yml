@@ -16,6 +16,7 @@ services:
     build:
       context: ./gstreamer-pipeline
       dockerfile: Dockerfile
+    restart: always
     devices:
       - /dev/video1:/dev/video1
       - /dev/snb:/dev/snb
