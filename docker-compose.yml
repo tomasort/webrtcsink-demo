@@ -41,7 +41,6 @@ services:
     networks:
       - webrtc-network
 
-
 networks:
   webrtc-network:
     driver: bridge

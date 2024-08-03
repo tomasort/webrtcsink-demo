@@ -1,4 +1,4 @@
-FROM python:3.9.19-alpine3.20
+FROM python:3.9-alpine3.19
 WORKDIR /app
 
 # Enable the 'edge' repository for newer packages

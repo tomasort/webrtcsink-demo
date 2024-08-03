@@ -8,11 +8,17 @@ Gst.init(None)
 
 def create_pipeline():
     # Create the pipeline directly with a multiline string
-    pipeline = Gst.parse_launch("""
+    capture_pipeline = """
         webrtcsink signaller::uri=ws://signaling-server:8443 name=ws meta="meta,name=gst-stream"
         v4l2src device=/dev/video1 ! video/x-raw ! videoconvert ! queue ! ws.
-        alsasrc device=hw:1,0 ! audio/x-raw ! audioconvert ! audioresample ! queue  ! ws.
-    """)
+        alsasrc device=hw:0,0 ! audio/x-raw ! audioconvert ! audioresample ! queue  ! ws.
+    """
+    test_pipeline = """
+        webrtcsink signaller::uri=ws://signaling-server:8443 name=ws meta="meta,name=gst-stream"
+        videotestsrc ! video/x-raw ! videoconvert ! queue ! ws.
+        audiotestsrc ! audio/x-raw ! audioconvert ! audioresample ! queue  ! ws.
+    """
+    pipeline = Gst.parse_launch(capture_pipeline)
 
     # Set up bus message handling
     loop = GLib.MainLoop()
